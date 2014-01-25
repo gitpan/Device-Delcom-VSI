@@ -1,0 +1,36 @@
+Device-Delcom-VSI version 0.05
+
+The files and code here are supporting the use of the Delcom Engineering
+(www.delcom-eng.com) USB Visual Indicator device under Linux with libusb
+and Perl.
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+
+Alternatively, to install with Module::Build, you can use the following commands:
+
+    perl Build.PL
+    ./Build
+    ./Build test
+    ./Build install
+
+
+
+DEPENDENCIES
+
+None.
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2006, Paul Archer and G. Wade Johnson
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

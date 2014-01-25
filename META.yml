@@ -1,0 +1,14 @@
+--- #YAML:1.0
+name:                Device-Delcom-VSI
+version:             0.05
+abstract:            Use Device::USB to access Delcom VSI devices.
+license:             ~
+generated_by:        ExtUtils::MakeMaker version 6.32
+distribution_type:   module
+requires:     
+    Test::More:                    0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
+author:
+    - G. Wade Johnson <wade@anomaly.org>
