@@ -8,7 +8,7 @@ use base "Device::USB::Device";
 
 =head1 Device::Delcom::VSI
 
-This class encapsulates access to one or more Selcom VSI devices.
+This class encapsulates access to one or more Delcom VSI devices.
 
 =cut 
 
@@ -18,11 +18,11 @@ Device::Delcom::VSI - Use Device::USB to access Delcom VSI devices.
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = 0.05;
+our $VERSION = 0.06;
 
 #use constant VENDORID => 0x0fc5;
 #use constant PRODUCTID => 0x1223;
@@ -34,6 +34,7 @@ my %colors=(
 		green	=> 0,
 		red	=> 1,
 		blue	=> 2,
+		yellow	=> 2,
 	   );
 
 ##my %options; #temporary
@@ -62,7 +63,7 @@ device using the Device::USB module.
 This module defines a Perl object that represents the data and functionality
 associated with a USB device. The object interface provides read-only access
 to the important data associated with a device. It also provides methods for
-almost all of the funcitons supplied by libusb. Where necessary, the interfaces
+almost all of the functions supplied by libusb. Where necessary, the interfaces
 to these methods were changed to better match Perl usage. However, most of the
 methods are straight-forward wrappers around their libusb counterparts.
 
@@ -163,7 +164,9 @@ sub _onoff_to_num
 Turn the leds on, off, or make them flash.
 
 The parameters to this function are expected in pairs: a color followed by
-a command. The expected colors are: red, blue, green.
+a command. The expected colors are: red, blue, green. For convenience if using
+the red/green/yellow version of the VSI, yellow can be used instead of blue 
+when issuing commands.
 
 The command can be one of the following:
 
@@ -375,6 +378,9 @@ sub led_phase_delay
 
 Set the brightness of a particular color of LED.
 
+The parameter list consists of a set of pairs of values. Each pair is
+a color and an intensity. Any colors not listed will not be changed.
+
 =over 4
 
 =item color
@@ -392,10 +398,17 @@ above 80 could potentially exceed the current limit of the USB port.
 
 sub led_intensity
 {
-    my ($self, $color, $intensity) = @_;
-    croak( "Unknown color '$color'\n" ) unless exists $colors{$color};
+    #my ($self, $color, $intensity) = @_;
+    my $self= shift;
+    croak( "Odd number of parameters to led_intensity.\n" ) if scalar( @_ ) % 2;
+    my %args = @_;
 
-    return $self->_light_intensity( $colors{$color}, $intensity );
+    foreach my $color (keys %args)
+    {
+        croak( "Unknown color '$color'\n" ) unless exists $colors{$color};
+	my $intensity = $args{$color};
+    	$self->_light_intensity( $colors{$color}, $intensity );
+    }
 }
 
 
@@ -447,15 +460,18 @@ sub buzzer_off
 
 Turn on the buzzer, setting its frequency and duty cycle.
 
+The parameter list consists of a set of pairs of values. Each pair is
+optional, and a default value will be substituted if a parameter is missing.
+
 =over 4
 
 =item freq
 
-Frequency value in 256us increments. Legal values are from 1 to 255.
+Frequency value in 256us increments. Legal values are from 1 to 255. Default is 10.
 
 =item repeat
 
-Number of cycles to repeat. Legal values are 1 - 254. There are also
+Number of cycles to repeat. Legal values are 1 - 254. Default is 3. There are also
 two special values: 0 (full) and 255 (forever)
 
 A repeat value of 0 or 'full' causes the buzzer to run continuously at
@@ -466,11 +482,11 @@ given frequency and duty cycle continuously.
 
 =item duty_on
 
-The on time portion of the duty cycle.
+The on time portion of the duty cycle. Default is 3.
 
 =item duty_off
 
-The off time portion of the duty cycle.
+The off time portion of the duty cycle. Default is 3.
 
 =back
 
@@ -478,7 +494,14 @@ The off time portion of the duty cycle.
 
 sub buzzer_on
 {
-    my ($self, $freq, $repeat, $duty_on, $duty_off) = @_;
+	my $self = shift;
+	my %args = @_;
+	croak( "Odd number of parameters to buzzer_on.\n" ) if scalar( @_ ) % 2;
+#    my ($self, $freq, $repeat, $duty_on, $duty_off) = @_;
+	my $freq = $args{freq} || 10;
+	my $repeat = $args{repeat} || 3;
+	my $duty_on = $args{duty_on} || 3;
+	my $duty_off = $args{duty_off} || 3;
     
     $repeat = 0   if !defined $repeat or 'full' eq $repeat;
     $repeat = 255 if defined $repeat and 'forever' eq $repeat;
@@ -1015,7 +1038,7 @@ sub _write_both_ports
 #
 #  port - port number: 0 or 1
 #  setbits - bitmask showing which bits to turn on
-#  resetbits - bitmask showing which bits to turn on
+#  resetbits - bitmask showing which bits to turn off
 #
 # In case of conflict, reset overrides set.
 #

@@ -25,12 +25,13 @@ Alternatively, to install with Module::Build, you can use the following commands
 
 DEPENDENCIES
 
-None.
+Device::USB
 
 
 COPYRIGHT AND LICENCE
 
 Copyright (C) 2006, Paul Archer and G. Wade Johnson
+Copyright (C) 2014, Paul Archer
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
