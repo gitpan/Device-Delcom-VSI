@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Device-Delcom-VSI
-version:            0.07
+version:            0.08
 abstract:           Use Device::USB to access Delcom VSI devices.
 author:
     - G. Wade Johnson <wade@anomaly.org>

@@ -18,11 +18,11 @@ Device::Delcom::VSI - Use Device::USB to access Delcom VSI devices.
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =cut
 
-our $VERSION = 0.07;
+our $VERSION = 0.08;
 
 #use constant VENDORID => 0x0fc5;
 #use constant PRODUCTID => 0x1223;

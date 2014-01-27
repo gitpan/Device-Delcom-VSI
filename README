@@ -1,4 +1,4 @@
-Device-Delcom-VSI version 0.07
+Device-Delcom-VSI version 0.08
 
 The files and code here are supporting the use of the Delcom Engineering
 (www.delcom-eng.com) USB Visual Indicator device under Linux with libusb

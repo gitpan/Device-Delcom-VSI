@@ -10,6 +10,7 @@ my $builder = Module::Build->new(
     requires => {
         'Test::More' => 0,
         'version'    => 0,
+	'Device::USB' => 0,
     },
     add_to_cleanup      => [ 'Device-Delcom-VSI-*' ],
 );
