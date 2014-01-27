@@ -18,11 +18,11 @@ Device::Delcom::VSI - Use Device::USB to access Delcom VSI devices.
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = 0.06;
+our $VERSION = 0.07;
 
 #use constant VENDORID => 0x0fc5;
 #use constant PRODUCTID => 0x1223;
@@ -1350,7 +1350,7 @@ and helped with the development.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2006 Houston Perl Mongers
+Copyright 2006, 2014 Houston Perl Mongers
 
 Device::Delcom::VSI is released under the GNU Public License (GPL).
 
